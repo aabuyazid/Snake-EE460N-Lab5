@@ -111,15 +111,12 @@ PS2Display dis (SSEGClk,sev_seg_data,KeyRelease,an,sseg);
 always @(posedge clk) begin
     if(checkedRelease) begin
         if(strobe_counter == `ENDSTROBE) begin
+            checkedRelease <= KeyRelease ? 1:0;
             strobe_reg <= 0;
-            checkedRelease <= 0;
             strobe_counter <= strobe_counter;
         end
         else
-            strobe_counter <= strobe_counter + 1;
-            strobe_reg <= 1;
-            checkedRelease <= 1;
-            
+            strobe_counter <= strobe_counter + 1;    
     end
     else begin
         if(KeyRelease) begin
