@@ -65,14 +65,14 @@ module Snake_SM(
     input game_clk, // Should be 5Hz
     input PS2CLK,
     input PS2Data,
-    output [5:0] SnakePos0_X,
-    output [5:0] SnakePos0_Y,
-    output [5:0] SnakePos1_X,
-    output [5:0] SnakePos1_Y,
-    output [5:0] SnakePos2_X,
-    output [5:0] SnakePos2_Y,
-    output [5:0] SnakePos3_X,
-    output [5:0] SnakePos3_Y,
+    output [6:0] SnakePos0_X,
+    output [6:0] SnakePos0_Y,
+    output [6:0] SnakePos1_X,
+    output [6:0] SnakePos1_Y,
+    output [6:0] SnakePos2_X,
+    output [6:0] SnakePos2_Y,
+    output [6:0] SnakePos3_X,
+    output [6:0] SnakePos3_Y,
     output reg AllBlack
 );
 
@@ -80,16 +80,25 @@ wire [7:0] KeyPress;
 
 PS2 keyboard (PS2CLK,PS2Data,KeyPress);
 
-reg [5:0] SnakePos [2:0];
+reg [6:0] SnakePos [7:0];
 
 reg [4:0] curr_state;
 reg [4:0] next_state;
-reg [2:0] curr_tail;
-reg [2:0] next_tail;
-reg [2:0] curr_head;
-reg [2:0] next_head;
+reg [1:0] curr_tail;
+reg [1:0] next_tail;
+reg [1:0] curr_head;
+reg [1:0] next_head;
  
 reg [2:0] index;
+
+assign SnakePos0_X = SnakePos[0];
+assign SnakePos0_Y = SnakePos[1];
+assign SnakePos1_X = SnakePos[2];
+assign SnakePos1_Y = SnakePos[3];
+assign SnakePos2_X = SnakePos[4];
+assign SnakePos2_Y = SnakePos[5];
+assign SnakePos3_X = SnakePos[6];
+assign SnakePos3_Y = SnakePos[7];
 
 initial begin
     curr_state <= `WAIT;
@@ -113,8 +122,8 @@ always@(posedge main_clk) begin
                     next_state <= `WAIT;
             end
             for(index = 0; index < 4; index = index + 1) begin
-                SnakePos[index+index] <= 48; // x-coor
-                SnakePos[index+index+1] <= index; // y-coor
+                SnakePos[index+index] <= index; // x-coor
+                SnakePos[index+index+1] <= 48; // y-coor
             end
         end
         `INTIALIZE: begin
@@ -128,10 +137,10 @@ always@(posedge main_clk) begin
                     next_state <= `RIGHT3;
             end
             for(index = 0; index < 4; index = index + 1) begin
-                SnakePos[index+index] <= 23; // x-coor
-                SnakePos[index+index+1] <= index; // y-coor
+                SnakePos[index+index] <= index; // x-coor
+                SnakePos[index+index+1] <= 23; // y-coor
             end
-            curr_head = 3;
+            next_head <= 3;
         end
         `BLACK: begin
             if(KeyPress == `START)
@@ -165,8 +174,8 @@ always@(posedge main_clk) begin
             end
             next_head <= curr_tail; 
             next_tail <= (curr_tail+1) % 4;
-            SnakePos[curr_tail+curr_tail] = SnakePos[curr_head+curr_head];
-            SnakePos[curr_tail+curr_tail+1] = SnakePos[curr_head+curr_head+1] - 1;
+            SnakePos[curr_tail+curr_tail] <= SnakePos[curr_head+curr_head];
+            SnakePos[curr_tail+curr_tail+1] <= SnakePos[curr_head+curr_head+1] - 1;
         end
         `UP1: begin
             if(KeyPress == `ESC) begin
@@ -180,8 +189,8 @@ always@(posedge main_clk) begin
             end
             next_head <= curr_tail; 
             next_tail <= (curr_tail+1) % 4;
-            SnakePos[curr_tail+curr_tail] = SnakePos[curr_head+curr_head];
-            SnakePos[curr_tail+curr_tail+1] = SnakePos[curr_head+curr_head+1] - 1;
+            SnakePos[curr_tail+curr_tail] <= SnakePos[curr_head+curr_head];
+            SnakePos[curr_tail+curr_tail+1] <= SnakePos[curr_head+curr_head+1] - 1;
         end
         `UP2: begin
             if(KeyPress == `ESC) begin
@@ -195,8 +204,8 @@ always@(posedge main_clk) begin
             end
             next_head <= curr_tail; 
             next_tail <= (curr_tail+1) % 4;
-            SnakePos[curr_tail+curr_tail] = SnakePos[curr_head+curr_head];
-            SnakePos[curr_tail+curr_tail+1] = SnakePos[curr_head+curr_head+1] - 1;
+            SnakePos[curr_tail+curr_tail] <= SnakePos[curr_head+curr_head];
+            SnakePos[curr_tail+curr_tail+1] <= SnakePos[curr_head+curr_head+1] - 1;
         end
         `UP3: begin
             if(KeyPress == `ESC) begin
@@ -222,8 +231,8 @@ always@(posedge main_clk) begin
             end
             next_head <= curr_tail; 
             next_tail <= (curr_tail+1) % 4;
-            SnakePos[curr_tail+curr_tail] = SnakePos[curr_head+curr_head];
-            SnakePos[curr_tail+curr_tail+1] = SnakePos[curr_head+curr_head+1] - 1;
+            SnakePos[curr_tail+curr_tail] <= SnakePos[curr_head+curr_head];
+            SnakePos[curr_tail+curr_tail+1] <= SnakePos[curr_head+curr_head+1] - 1;
         end
         `UPPAUSE: begin
             if(KeyPress == `ESC)
@@ -253,8 +262,8 @@ always@(posedge main_clk) begin
             end
             next_head <= curr_tail; 
             next_tail <= (curr_tail+1) % 4;
-            SnakePos[curr_tail+curr_tail] = SnakePos[curr_head+curr_head];
-            SnakePos[curr_tail+curr_tail+1] = SnakePos[curr_head+curr_head+1] + 1;
+            SnakePos[curr_tail+curr_tail] <= SnakePos[curr_head+curr_head];
+            SnakePos[curr_tail+curr_tail+1] <= SnakePos[curr_head+curr_head+1] + 1;
         end
         `DOWN1: begin
             if(KeyPress == `ESC) begin
@@ -268,8 +277,8 @@ always@(posedge main_clk) begin
             end
             next_head <= curr_tail; 
             next_tail <= (curr_tail+1) % 4;
-            SnakePos[curr_tail+curr_tail] = SnakePos[curr_head+curr_head];
-            SnakePos[curr_tail+curr_tail+1] = SnakePos[curr_head+curr_head+1] + 1;
+            SnakePos[curr_tail+curr_tail] <= SnakePos[curr_head+curr_head];
+            SnakePos[curr_tail+curr_tail+1] <= SnakePos[curr_head+curr_head+1] + 1;
         end
         `DOWN2: begin
             if(KeyPress == `ESC) begin
@@ -283,8 +292,8 @@ always@(posedge main_clk) begin
             end
             next_head <= curr_tail; 
             next_tail <= (curr_tail+1) % 4;
-            SnakePos[curr_tail+curr_tail] = SnakePos[curr_head+curr_head];
-            SnakePos[curr_tail+curr_tail+1] = SnakePos[curr_head+curr_head+1] + 1;
+            SnakePos[curr_tail+curr_tail] <= SnakePos[curr_head+curr_head];
+            SnakePos[curr_tail+curr_tail+1] <= SnakePos[curr_head+curr_head+1] + 1;
         end
         `DOWN3: begin
             if(KeyPress == `ESC) begin
@@ -310,8 +319,8 @@ always@(posedge main_clk) begin
             end
             next_head <= curr_tail; 
             next_tail <= (curr_tail+1) % 4;
-            SnakePos[curr_tail+curr_tail] = SnakePos[curr_head+curr_head];
-            SnakePos[curr_tail+curr_tail+1] = SnakePos[curr_head+curr_head+1] + 1;
+            SnakePos[curr_tail+curr_tail] <= SnakePos[curr_head+curr_head];
+            SnakePos[curr_tail+curr_tail+1] <= SnakePos[curr_head+curr_head+1] + 1;
         end
         `DOWNPAUSE: begin
             if(KeyPress == `ESC)
@@ -341,8 +350,8 @@ always@(posedge main_clk) begin
             end
             next_head <= curr_tail;
             next_tail <= (curr_tail+1) % 4;
-            SnakePos[curr_tail+curr_tail] = SnakePos[curr_head+curr_head] + 1; // x-coor
-            SnakePos[curr_tail+curr_tail+1] = SnakePos[curr_head+curr_head+1]; // y-coor
+            SnakePos[curr_tail+curr_tail] <= SnakePos[curr_head+curr_head] + 1; // x-coor
+            SnakePos[curr_tail+curr_tail+1] <= SnakePos[curr_head+curr_head+1]; // y-coor
         end
         `RIGHT1: begin
             if(KeyPress == `ESC) begin
@@ -356,8 +365,8 @@ always@(posedge main_clk) begin
             end
             next_head <= curr_tail;
             next_tail <= (curr_tail+1) % 4;
-            SnakePos[curr_tail+curr_tail] = SnakePos[curr_head+curr_head] + 1; // x-coor
-            SnakePos[curr_tail+curr_tail+1] = SnakePos[curr_head+curr_head+1]; // y-coor
+            SnakePos[curr_tail+curr_tail] <= SnakePos[curr_head+curr_head] + 1; // x-coor
+            SnakePos[curr_tail+curr_tail+1] <= SnakePos[curr_head+curr_head+1]; // y-coor
         end
         `RIGHT2: begin
             if(KeyPress == `ESC) begin
@@ -371,8 +380,8 @@ always@(posedge main_clk) begin
             end
             next_head <= curr_tail;
             next_tail <= (curr_tail+1) % 4;
-            SnakePos[curr_tail+curr_tail] = SnakePos[curr_head+curr_head] + 1; // x-coor
-            SnakePos[curr_tail+curr_tail+1] = SnakePos[curr_head+curr_head+1]; // y-coor
+            SnakePos[curr_tail+curr_tail] <= SnakePos[curr_head+curr_head] + 1; // x-coor
+            SnakePos[curr_tail+curr_tail+1] <= SnakePos[curr_head+curr_head+1]; // y-coor
         end
         `RIGHT3: begin
             if(KeyPress == `ESC) begin
@@ -398,8 +407,8 @@ always@(posedge main_clk) begin
             end
             next_head <= curr_tail;
             next_tail <= (curr_tail+1) % 4;
-            SnakePos[curr_tail+curr_tail] = SnakePos[curr_head+curr_head] + 1; // x-coor
-            SnakePos[curr_tail+curr_tail+1] = SnakePos[curr_head+curr_head+1]; // y-coor
+            SnakePos[curr_tail+curr_tail] <= SnakePos[curr_head+curr_head] + 1; // x-coor
+            SnakePos[curr_tail+curr_tail+1] <= SnakePos[curr_head+curr_head+1]; // y-coor
         end
         `RIGHTPAUSE: begin
             if(KeyPress == `ESC)
@@ -429,8 +438,8 @@ always@(posedge main_clk) begin
             end
             next_head <= curr_tail;
             next_tail <= (curr_tail+1) % 4;
-            SnakePos[curr_tail+curr_tail] = SnakePos[curr_head+curr_head] - 1; // x-coor
-            SnakePos[curr_tail+curr_tail+1] = SnakePos[curr_head+curr_head+1]; // y-coor
+            SnakePos[curr_tail+curr_tail] <= SnakePos[curr_head+curr_head] - 1; // x-coor
+            SnakePos[curr_tail+curr_tail+1] <= SnakePos[curr_head+curr_head+1]; // y-coor
         end
         `LEFT1: begin
             if(KeyPress == `ESC) begin
@@ -444,8 +453,8 @@ always@(posedge main_clk) begin
             end
             next_head <= curr_tail;
             next_tail <= (curr_tail+1) % 4;
-            SnakePos[curr_tail+curr_tail] = SnakePos[curr_head+curr_head] - 1; // x-coor
-            SnakePos[curr_tail+curr_tail+1] = SnakePos[curr_head+curr_head+1]; // y-coor
+            SnakePos[curr_tail+curr_tail] <= SnakePos[curr_head+curr_head] - 1; // x-coor
+            SnakePos[curr_tail+curr_tail+1] <= SnakePos[curr_head+curr_head+1]; // y-coor
         end
         `LEFT2: begin
             if(KeyPress == `ESC) begin
@@ -459,8 +468,8 @@ always@(posedge main_clk) begin
             end
             next_head <= curr_tail;
             next_tail <= (curr_tail+1) % 4;
-            SnakePos[curr_tail+curr_tail] = SnakePos[curr_head+curr_head] - 1; // x-coor
-            SnakePos[curr_tail+curr_tail+1] = SnakePos[curr_head+curr_head+1]; // y-coor
+            SnakePos[curr_tail+curr_tail] <= SnakePos[curr_head+curr_head] - 1; // x-coor
+            SnakePos[curr_tail+curr_tail+1] <= SnakePos[curr_head+curr_head+1]; // y-coor
         end
         `LEFT3: begin
             if(KeyPress == `ESC) begin
@@ -486,8 +495,8 @@ always@(posedge main_clk) begin
             end
             next_head <= curr_tail;
             next_tail <= (curr_tail+1) % 4;
-            SnakePos[curr_tail+curr_tail] = SnakePos[curr_head+curr_head] + 1; // x-coor
-            SnakePos[curr_tail+curr_tail+1] = SnakePos[curr_head+curr_head+1]; // y-coor
+            SnakePos[curr_tail+curr_tail] <= SnakePos[curr_head+curr_head] + 1; // x-coor
+            SnakePos[curr_tail+curr_tail+1] <= SnakePos[curr_head+curr_head+1]; // y-coor
         end
         `LEFTPAUSE: begin
             if(KeyPress == `ESC)
@@ -513,23 +522,6 @@ end
 always@(posedge game_clk) begin
     curr_state <= next_state;
     curr_head <= next_head;
-    curr_tail <= curr_tail;
+    curr_tail <= next_tail;
 end
 endmodule
-
-module test_Snake_SM(
-    input main_clk,
-    input PS2CLK,
-    input PS2Data,
-    output AllBlack
-);
-wire game_clk;
-wire [5:0] SnakePos [2:0];
-
-clk_div game_clock (main_clk, game_clk);
-Snake_SM test (main_clk, game_clk, PS2CLK, PS2Data, 
-    SnakePos[0], SnakePos[1], SnakePos[2], SnakePos[3], 
-    SnakePos[4], SnakePos[5], SnakePos[6], SnakePos[7], AllBlack);
-
-endmodule
-
