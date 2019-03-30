@@ -15,7 +15,7 @@ module Snake_1(clk, Py1, Py2, Py3, Py4, Px1, Px2, Px3, Px4, hIndex,vIndex,color)
     
     //Refreshes the screen and places the snake 
     always@(posedge clkFPS) begin
-        for (i=0; i<47; i=i+1) begin
+        for (i=0; i<48; i=i+1) begin
             screen[i] <= 63'd0;
         end
         screen[Py1][Px1] <= 1'b1;
