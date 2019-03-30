@@ -174,8 +174,7 @@ module Snake_SM(
     output [6:0] SnakePos3_X,
     output [6:0] SnakePos3_Y,
     output reg AllBlack,
-    output [3:0] an,
-    output [6:0] sseg
+    output strobe
 );
 
 wire [7:0] KeyPress;
@@ -203,6 +202,11 @@ assign SnakePos2_X = SnakePos[4];
 assign SnakePos2_Y = SnakePos[5];
 assign SnakePos3_X = SnakePos[6];
 assign SnakePos3_Y = SnakePos[7];
+
+assign strobe = ((SnakePos0_X && SnakePos1_X) || (SnakePos0_X && SnakePos2_X) || (SnakePos0_X && SnakePos3_X) ||
+                (SnakePos1_X && SnakePos2_X) || (SnakePos1_X && SnakePos3_X) || (SnakePos2_X && SnakePos3_X)) && 
+                ((SnakePos0_Y && SnakePos1_Y) || (SnakePos0_Y && SnakePos2_Y) || (SnakePos0_Y && SnakePos3_Y) ||
+                (SnakePos1_Y && SnakePos2_Y) || (SnakePos1_Y && SnakePos3_Y) || (SnakePos2_Y && SnakePos3_Y));
 
 initial begin
     curr_state <= `WAIT;
