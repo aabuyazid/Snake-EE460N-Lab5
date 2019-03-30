@@ -195,14 +195,14 @@ reg [2:0] index;
 
 StateDisplayController con (main_clk,curr_state,an,sseg);
 
-assign SnakePos0_Y = SnakePos[0];
-assign SnakePos0_X = SnakePos[1];
-assign SnakePos1_Y = SnakePos[2];
-assign SnakePos1_X = SnakePos[3];
-assign SnakePos2_Y = SnakePos[4];
-assign SnakePos2_X = SnakePos[5];
-assign SnakePos3_Y = SnakePos[6];
-assign SnakePos3_X = SnakePos[7];
+assign SnakePos0_X = SnakePos[0];
+assign SnakePos0_Y = SnakePos[1];
+assign SnakePos1_X = SnakePos[2];
+assign SnakePos1_Y = SnakePos[3];
+assign SnakePos2_X = SnakePos[4];
+assign SnakePos2_Y = SnakePos[5];
+assign SnakePos3_X = SnakePos[6];
+assign SnakePos3_Y = SnakePos[7];
 
 initial begin
     curr_state <= `WAIT;
