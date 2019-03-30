@@ -206,7 +206,7 @@ assign SnakePos3_Y = SnakePos[7];
 
 initial begin
     curr_state <= `WAIT;
-    curr_head <= 0;
+    curr_head <= 3;
     curr_tail <= 0;
     AllBlack <= 0;
     next_state <= `WAIT;
@@ -330,7 +330,7 @@ always@(posedge main_clk) begin
                             if(KeyPress == `RIGHT)
                                 next_state <= `RIGHT0;
                             else 
-                                next_state <= `UP0;
+                                next_state <= `UP3;
                         end
                     end
                 end
@@ -418,7 +418,7 @@ always@(posedge main_clk) begin
                             if(KeyPress == `RIGHT)
                                 next_state <= `RIGHT0;
                             else 
-                                next_state <= `DOWN0;
+                                next_state <= `DOWN3;
                         end
                     end
                 end
@@ -506,7 +506,7 @@ always@(posedge main_clk) begin
                             if(KeyPress == `DOWN)
                                 next_state <= `DOWN0;
                             else 
-                                next_state <= `RIGHT0;
+                                next_state <= `RIGHT3;
                         end
                     end
                 end
@@ -594,7 +594,7 @@ always@(posedge main_clk) begin
                             if(KeyPress == `DOWN)
                                 next_state <= `DOWN0;
                             else 
-                                next_state <= `RIGHT0;
+                                next_state <= `LEFT3;
                         end
                     end
                 end
