@@ -16,11 +16,14 @@ endmodule
 module PS2(
     input PS2CLK,
     input PS2Data,
-    output [7:0] KeyPress
+    output [7:0] KeyPress,
+    output newKey
 );
 
 wire [0:21] Data;
 wire ready, KeyRelease;
+
+reg [7:0] PrevKeyPress = 8'hF0;
 
 reg [7:0] KeyPress_reg = 8'hF0;
 
@@ -30,11 +33,17 @@ GetPS2Data get (PS2CLK,PS2Data,Data);
 
 assign KeyRelease = (Data[13:20] == 8'hF0) ? 1:0;
 
+assign newKey = (PrevKeyPress != KeyPress);
+
 always @(negedge PS2CLK) begin
-    if(KeyRelease)
+    if(KeyRelease) begin
+        PrevKeyPress <= KeyPress_reg;
         KeyPress_reg <= Data[2:9];
-    else
+    end
+    else begin
         KeyPress_reg <= KeyPress_reg;
+        PrevKeyPress <= PrevKeyPress;
+    end
 end
 
 endmodule

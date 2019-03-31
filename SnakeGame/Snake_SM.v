@@ -54,6 +54,7 @@ end
 always @(posedge main_clk) begin
     if(count == 10000000)
         game_clk = ~game_clk;
+        count <= 0;
     else
         count = count + 1;
 end
@@ -65,6 +66,7 @@ module Snake_SM(
     input game_clk, // Should be 5Hz
     input PS2CLK,
     input PS2Data,
+    input newKey,
     output [6:0] SnakePos0_X,
     output [6:0] SnakePos0_Y,
     output [6:0] SnakePos1_X,
@@ -77,9 +79,12 @@ module Snake_SM(
     output strobe
 );
 
-wire [7:0] KeyPress;
+wire [7:0] Inc_KeyPress;
+wire [7:0] KeyPress
 
-PS2 keyboard (PS2CLK,PS2Data,KeyPress);
+PS2 keyboard (PS2CLK,PS2Data,Inc_KeyPress);
+
+assign KeyPress = newKey ? Inc_KeyPress:0;
 
 reg [6:0] SnakePos [7:0];
 
@@ -91,8 +96,6 @@ reg [1:0] curr_head;
 reg [1:0] next_head;
  
 reg [2:0] index;
-
-StateDisplayController con (main_clk,curr_state,an,sseg);
 
 assign SnakePos0_X = SnakePos[0];
 assign SnakePos0_Y = SnakePos[1];
@@ -138,11 +141,8 @@ always@(posedge main_clk) begin
             if(KeyPress == `ESC) begin
                 next_state <= `BLACK;
             end
-            else begin
-                if(KeyPress == `START)
-                    next_state <= `INTIALIZE;
-                else
-                    next_state <= `RIGHT3;
+            else
+                next_state <= `RIGHT3;
             end
             for(index = 0; index < 4; index = index + 1) begin
                 SnakePos[index+index] <= index; // x-coor
