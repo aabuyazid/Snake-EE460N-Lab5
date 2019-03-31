@@ -505,7 +505,7 @@ always@(posedge main_clk) begin
             end
             next_head <= curr_tail;
             next_tail <= (curr_tail+1) % 4;
-            SnakePos[curr_tail+curr_tail] <= SnakePos[curr_head+curr_head] + 1; // x-coor
+            SnakePos[curr_tail+curr_tail] <= SnakePos[curr_head+curr_head] - 1; // x-coor
             SnakePos[curr_tail+curr_tail+1] <= SnakePos[curr_head+curr_head+1]; // y-coor
         end
         `LEFTPAUSE: begin
