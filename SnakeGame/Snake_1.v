@@ -9,7 +9,7 @@ module Snake_1(clk, Py1, Py2, Py3, Py4, Px1, Px2, Px3, Px4, hIndex,vIndex,color,
     output [11:0] color;
     wire clkFPS, clk25MHz;
     integer i,j;
-    reg [63:0] screen [48:0];
+    reg [63:0] screen [47:0];
     reg [11:0] colorReg;
     clkFPS s6 (clk, clkFPS);
     clk4th s7 (clk, clk25MHz);
@@ -24,10 +24,6 @@ module Snake_1(clk, Py1, Py2, Py3, Py4, Px1, Px2, Px3, Px4, hIndex,vIndex,color,
                                 (i == Py4 && j == Px4);
             end
         end
-        screen[Py1][Px1] <= 1'b1;
-        screen[Py2][Px2] <= 1'b1;
-        screen[Py3][Px3] <= 1'b1;
-        screen[Py4][Px4] <= 1'b1;
     end
     //maps the screen to the output
     assign color = colorReg;
@@ -47,13 +43,13 @@ module clkFPS (clk, clkFPS); // 5kHz
     input clk; 
     output clkFPS;
     reg [19:0] count=0;
-    reg game_clk;
+    reg game_clk = 0;
     assign clkFPS = game_clk;
     always @(posedge clk) begin
-    if(count == 10000000) begin
-        game_clk = ~game_clk;
-        count = 0;
-    end else
-        count = count + 1;
-end
+        if(count == 10000000) begin
+            game_clk <= ~game_clk;
+            count <= 0;
+        end else
+            count <= count + 1;
+    end
 endmodule
