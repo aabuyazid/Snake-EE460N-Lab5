@@ -52,9 +52,10 @@ initial begin
 end
 
 always @(posedge main_clk) begin
-    if(count == 10000000)
+    if(count == 10000000) begin
         game_clk = ~game_clk;
         count <= 0;
+    end
     else
         count = count + 1;
 end
@@ -80,11 +81,11 @@ module Snake_SM(
 );
 
 wire [7:0] Inc_KeyPress;
-wire [7:0] KeyPress
+wire [7:0] KeyPress;
 
 PS2 keyboard (PS2CLK,PS2Data,Inc_KeyPress);
 
-assign KeyPress = newKey ? Inc_KeyPress:0;
+assign KeyPress = newKey ? Inc_KeyPress : 0;
 
 reg [6:0] SnakePos [7:0];
 
@@ -143,7 +144,6 @@ always@(posedge main_clk) begin
             end
             else
                 next_state <= `RIGHT3;
-            end
             for(index = 0; index < 4; index = index + 1) begin
                 SnakePos[index+index] <= index; // x-coor
                 SnakePos[index+index+1] <= 23; // y-coor
