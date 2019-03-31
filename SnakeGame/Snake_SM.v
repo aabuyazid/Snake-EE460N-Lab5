@@ -67,7 +67,7 @@ module Snake_SM(
     input game_clk, // Should be 5Hz
     input PS2CLK,
     input PS2Data,
-    input newKey,
+    //input newKey,
     output [6:0] SnakePos0_X,
     output [6:0] SnakePos0_Y,
     output [6:0] SnakePos1_X,
@@ -80,12 +80,12 @@ module Snake_SM(
     output strobe
 );
 
-wire [7:0] Inc_KeyPress;
+//wire [7:0] Inc_KeyPress;
 wire [7:0] KeyPress;
 
-PS2 keyboard (PS2CLK,PS2Data,Inc_KeyPress);
+    PS2 keyboard (PS2CLK,PS2Data,KeyPress);//PS2 keyboard (PS2CLK,PS2Data,Inc_KeyPress);
 
-assign KeyPress = newKey ? Inc_KeyPress : 0;
+//assign KeyPress = newKey ? Inc_KeyPress : 0;
 
 reg [6:0] SnakePos [7:0];
 
