@@ -16,14 +16,18 @@ module Snake_1(clk, Py1, Py2, Py3, Py4, Px1, Px2, Px3, Px4, hIndex,vIndex,color,
     
     //Refreshes the screen and places the snake 
     always@(posedge clkFPS) begin
+//        for (i=0; i<48; i=i+1) begin
+//            for (j=0; j<64; j=j+1) begin
+//                screen[i][j] <= (i == Py1 && j == Px1) || 
+//                                (i == Py2 && j == Px2) ||
+//                                (i == Py3 && j == Px3) ||
+//                                (i == Py4 && j == Px4);
+//            end
+//        end
         for (i=0; i<48; i=i+1) begin
-            for (j=0; j<64; j=j+1) begin
-                screen[i][j] <= (i == Py1 && j == Px1) || 
-                                (i == Py2 && j == Px2) ||
-                                (i == Py3 && j == Px3) ||
-                                (i == Py4 && j == Px4);
-            end
+            screen[i] = 0;
         end
+        screen[vIndex][hIndex] = 1'b1;
     end
     //maps the screen to the output
     assign color = colorReg;
