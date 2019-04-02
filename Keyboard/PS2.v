@@ -29,11 +29,11 @@ assign KeyPress = KeyPress_reg;
 
 GetPS2Data get (PS2CLK,PS2Data,Data);
 
-assign KeyRelease = (Data[13:20] == 8'hF0) ? 1:0;
+assign KeyRelease = (Data[2:9] == 8'hF0) ? 1:0;
 
 always @(negedge PS2CLK) begin
     if(KeyRelease)
-        KeyPress_reg <= Data[2:9];
+        KeyPress_reg <= Data[13:20];
     else
         KeyPress_reg <= KeyPress_reg;
 end
