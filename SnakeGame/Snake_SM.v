@@ -548,7 +548,6 @@ always@(posedge game_clk) begin
         KeyPress <= next_KeyPress;
     else 
         KeyPress <= 0;
-        
     curr_state <= next_state;
 end
 
